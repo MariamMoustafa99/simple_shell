@@ -29,10 +29,10 @@ int alias_print(struct_list *d)
  *
  * Return: 1 if alias is replaced or 0 otherwise
  */
-int alias_rep(info_t *f)
+int alias_rep(struct_info *f)
 {
 	int k;
-	list_t *d;
+	struct_list *d;
 	char *m;
 
 	for (k = 0; k < 10; k++)
