@@ -18,6 +18,26 @@ char *str_char(char *word, char x)
 }
 
 /**
+ * char_duplicate - function that duplicates chars
+ * @str_path: path string
+ * @r: the starting index
+ * @p: the stopping index
+ *
+ * Return: pointer to the new buffer
+ */
+char *char_duplicate(char *str_path, int r, int p)
+{
+	static char buffer[1024];
+	int m = 0, j = 0;
+
+	for (j = 0, m = r; m < p; m++)
+		if (str_path[m] != ':')
+			buffer[j++] = str_path[m];
+	buffer[j] = 0;
+	return (buffer);
+}
+
+/**
  * *str_num_copy - function that copies a num of chars from a string
  * @out: output string
  * @in: string to copy from
