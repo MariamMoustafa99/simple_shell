@@ -34,7 +34,7 @@ int str_len(char *str)
 }
 
 /**
- * str_concat - fumction that concatenates 2 strings
+ * *str_concat - fumction that concatenates 2 strings
  * @str1: string 1
  * @str2: string 2
  *
@@ -53,14 +53,13 @@ char *str_concat(char *str1, char *str2)
 }
 
 /**
- * str_comp - function that compares two strings
+ * str_cmp - function that compares two strings
  * @str1: string 1
  * @str2: tstring 2
  *
- * Return: -1 if str1 less than str2, 1 if str1 larger than str2
- * or 0 if str1 == str2
+ * Return: -1 if str1 less than str2, 1 if str1 larger than str2 or 0 if str1 == str2
  */
-int str_comp(char *str1, char *str2)
+int str_cmp(char *str1, char *str2)
 {
 	while (*str1 && *str2)
 	{

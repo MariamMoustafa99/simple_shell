@@ -4,7 +4,7 @@
  * **str_to_word - function that split string to words
  * @m: string input
  * @del: delimiter string
- *
+
  * Return: a pointer to an array of strings or NULL on error
  */
 
@@ -18,7 +18,7 @@ char **str_to_word(char *m, char *del)
 	if (!del)
 		del = " ";
 	for (a = 0; m[i] != '\0'; a++)
-		if (!is_delim(m[a], del) && (is_delim(m[a + 1], del) || !m[a + 1]))
+		if (!de_limiter(m[a], del) && (de_limiter(m[a + 1], del) || !m[a + 1]))
 			numOfWords++;
 
 	if (numOfWords == 0)
@@ -28,10 +28,10 @@ char **str_to_word(char *m, char *del)
 		return (NULL);
 	for (a = 0, b = 0; b < numOfWords; b++)
 	{
-		while (is_delim(m[a], del))
+		while (de_limiter(m[a], del))
 			a++;
 		c = 0;
-		while (!is_delim(m[a + c], del) && m[a + c])
+		while (!de_limiter(m[a + c], del) && m[a + c])
 			c++;
 		str[b] = malloc((c + 1) * sizeof(char));
 		if (!str[b])
@@ -53,7 +53,7 @@ char **str_to_word(char *m, char *del)
  * **str_to_word2 - function that split string to words
  * @m: string input
  * @del: delimiter string
- *
+
  * Return: a pointer to an array of strings or NULL on error
  */
 char **str_to_word2(char *m, char del)

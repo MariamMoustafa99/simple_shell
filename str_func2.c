@@ -14,28 +14,28 @@ void puts(char *m)
 		return;
 	while (m[i] != '\0')
 	{
-		putchar(m[k]);
+		put_char(m[k]);
 		k++;
 	}
 }
 
 /**
- * putchar - function that prints a character
+ * put_char - function that prints a character
  * @s: char to be printed
  *
  * Return: 1 on success, -1 on failure
  */
-int putchar(char s)
+int put_char(char s)
 {
 	static int f;
-	static char buffer[WRITE_BUF_SIZE];
+	static char buffer[WRITE_BUFFER_SIZE];
 
-	if (s == BUF_FLUSH || f >= WRITE_BUF_SIZE)
+	if (s == BUFFER_FLUSH || f >= WRITE_BUFFER_SIZE)
 	{
 		write(1, buffer, f);
 		f = 0;
 	}
-	if (s != BUF_FLUSH)
+	if (s != BUFFER_FLUSH)
 		buf[f++] = s;
 	return (1);
 }
