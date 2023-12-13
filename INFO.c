@@ -11,26 +11,26 @@ void info_set(struct_info *f, char **arg_vec)
 {
 	int k = 0;
 
-	f->fname = arg_vec[0];
+	f->file_name = arg_vec[0];
 	if (f->arg)
 	{
-		f->argv = strtow(f->arg, " \t");
-		if (!f->argv)
+		f->arg_vec = str_to_word(f->arg, " \t");
+		if (!f->arg_vec)
 		{
 
-			f->argv = malloc(sizeof(char *) * 2);
-			if (f->argv)
+			f->arg_vec = malloc(sizeof(char *) * 2);
+			if (f->arg_vec)
 			{
-				f->argv[0] = _strdup(f->arg);
-				f->argv[1] = NULL;
+				f->arg_vec[0] = str_dup(f->arg);
+				f->arg_vec[1] = NULL;
 			}
 		}
-		for (k = 0; f->argv && f->argv[k]; k++)
+		for (k = 0; f->arg_vec && f->arg_vec[k]; k++)
 			;
-		f->argc = k;
+		f->arg_count = k;
 
-		replace_alias(f);
-		replace_vars(f);
+		alias_rep(f);
+		rep_vars(f);
 	}
 }
 
@@ -43,25 +43,25 @@ void info_set(struct_info *f, char **arg_vec)
  */
 void info_free(struct_info *f, int free_all)
 {
-	ffree(f->argv);
-	f->argv = NULL;
-	f->path = NULL;
+	free_str(f->arg_vec);
+	f->arg_vec = NULL;
+	f->str_path = NULL;
 	if (free_all)
 	{
-		if (!f->cmd_buf)
+		if (!f->cmd_buffer)
 			free(f->arg);
-		if (f->env)
-			free_list(&(f->env));
-		if (f->history)
-			free_list(&(f->history));
+		if (f->en_viron)
+			list_free(&(f->en_viron));
+		if (f->hist)
+			list_free(&(f->hist));
 		if (f->alias)
-			free_list(&(f->alias));
-		ffree(f->environ);
+			list_free(&(f->alias));
+		free_str(f->environ);
 			f->environ = NULL;
-		bfree((void **)f->cmd_buf);
-		if (f->readfd > 2)
-			close(f->readfd);
-		_putchar(BUF_FLUSH);
+		free_pointer((void **)f->cmd_buffer);
+		if (f->read_fd > 2)
+			close(f->read_fd);
+		putchar(BUFFER_FLUSH);
 	}
 }
 
@@ -74,7 +74,7 @@ void info_free(struct_info *f, int free_all)
 void info_clear(struct_info *f)
 {
 	f->arg = NULL;
-	f->argv = NULL;
-	f->path = NULL;
-	f->argc = 0;
+	f->arg_vec = NULL;
+	f->str_path = NULL;
+	f->arg_count = 0;
 }
