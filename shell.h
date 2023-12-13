@@ -63,25 +63,26 @@ typedef struct list_str
 } struct_list;
 
 /**
- *struct pass_info - struct containing pseudo-arguements to pass into a function
- *@arg: a string generated from getline containing arguements
- *@arg_vec: an array of strings generated from arg
- *@str_path: a string path for the current command
- *@arg_count: the argument count
- *@line_count: the error count
- *@num_err: the error code for exit status
- *@lc_flag: if on count this line of input
- *@file_name: the program filename
- *@en_viron: linked list local copy of environ
- *@environ: custom modified copy of environ from LL env
- *@hist: the history node
- *@alias: the alias node
- *@env_change: on if environ was changed
- *@stat: the return status of the last exec'd command
- *@cmd_buffer: address of pointer to cmd_buf, on if chaining
- *@cmd_buffer_type: CMD_type ||, &&, ;
- *@read_fd: the fd from which to read line input
- *@hist_count: the history line number count
+ * struct pass_info - struct containing pseudo-arguements
+ * to pass into a function
+ * @arg: a string generated from getline containing arguements
+ * @arg_vec: an array of strings generated from arg
+ * @str_path: a string path for the current command
+ * @arg_count: the argument count
+ * @line_count: the error count
+ * @num_err: the error code for exit status
+ * @lc_flag: if on count this line of input
+ * @file_name: the program filename
+ * @en_viron: linked list local copy of environ
+ * @environ: custom modified copy of environ from LL env
+ * @hist: the history node
+ * @alias: the alias node
+ * @env_change: on if environ was changed
+ * @stat: the return status of the last exec'd command
+ * @cmd_buffer: address of pointer to cmd_buf, on if chaining
+ * @cmd_buffer_type: CMD_type ||, &&, ;
+ * @read_fd: the fd from which to read line input
+ * @hist_count: the history line number count
  */
 typedef struct passinfo
 {
