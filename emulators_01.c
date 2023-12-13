@@ -32,7 +32,7 @@ int my_curr_dir(struct_info *f)
 			return (1);
 		}
 		puts(get_environ(f, "OLDPWD=")), putchar('\n');
-		change_dir =
+		change_dir = 
 			chdir((to = get_environ(f, "OLDPWD=")) ? to : "/");
 	}
 	else
