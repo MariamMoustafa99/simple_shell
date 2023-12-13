@@ -6,36 +6,37 @@
  *
  * Return: 1 if var is replaced or 0 otherwise
  */
-int var_rep(struct_info *f)
+
+int rep_vars(struct_info *f)
 {
 	int k = 0;
 	struct_list *d;
 
-	for (k = 0; f->argv[k]; k++)
+	for (k = 0; f->arg_vec[k]; k++)
 	{
-		if (f->argv[k][0] != '$' || !f->argv[k][1])
+		if (f->arg_vec[k][0] != '$' || !f->arg_vecv[k][1])
 			continue;
 
-		if (!_strcmp(f->argv[k], "$?"))
+		if (!str_cmp(f->arg_vec[k], "$?"))
 		{
-			str_rep(&(f->argv[k]),
-				_strdup(convert_number(f->status, 10, 0)));
+			str_rep(&(f->arg_vec[k]),
+				str_dup(num_conv(f->stat, 10, 0)));
 			continue;
 		}
-		if (!_strcmp(f->argv[k], "$$"))
+		if (!str_cmp(f->arg_vec[k], "$$"))
 		{
-			str_rep(&(f->argv[k]),
-				_strdup(convert_number(getpid(), 10, 0)));
+			str_rep(&(f->arg_vec[k]),
+				str_dup(num_conv(getpid(), 10, 0)));
 			continue;
 		}
-		d = node_starts_with(f->env, &f->argv[k][1], '=');
+		d = node_begins(f->en_viron, &f->arg_vec[k][1], '=');
 		if (d)
 		{
-			str_rep(&(f->argv[k]),
-				_strdup(_strchr(d->str, '=') + 1));
+			str_rep(&(f->arg_vec[k]),
+				str_dup(str_char(d->c, '=') + 1));
 			continue;
 		}
-		str_rep(&f->argv[k], _strdup(""));
+		str_rep(&f->arg_vec[k], str_dup(""));
 
 	}
 	return (0);
@@ -56,8 +57,7 @@ int str_rep(char **str_old, char *str_new)
 }
 
 /**
- * chain_del - function that checks if the current char in buffer
- *      is a chain delimeter
+ * chain_del - function that checks if the current char in buf is a chain delimeter
  * @f: struct containing potential arguments
  * @buffer: char buffer
  * @c: address of the current pos in buffer
@@ -78,12 +78,12 @@ int chain_del(struct_info *f, char *buffer, size_t *c)
 	{
 		buffer[i] = 0;
 		i++;
-		f->cmd_buf_type = CMD_AND;
+		f->cmd_buffer_type = CMD_AND;
 	}
 	else if (buffer[i] == ';')
 	{
 		buffer[i] = 0;
-		f->cmd_buf_type = CMD_CHAIN;
+		f->cmd_buffer_type = CMD_CHAIN;
 	}
 	else
 		return (0);
@@ -92,10 +92,9 @@ int chain_del(struct_info *f, char *buffer, size_t *c)
 }
 
 /**
- * chain_checked - function that checks whether to continue
- *     chaining based on prev status
+ * chain_checked - function that checks whether to continue chaining based on prev status
  * @f: struct containing potential arguments
- * @buffer: char buffer
+ * @buf: char buffer
  * @c: address of the current pos in buffer
  * @k: starting pos in buffer
  * @n: the length of buffer
@@ -106,17 +105,17 @@ void chain_checked(struct_info *f, char *buffer, size_t *c, size_t k, size_t n)
 {
 	size_t i = *c;
 
-	if (f->cmd_buf_type == CMD_AND)
+	if (f->cmd_buffer_type == CMD_AND)
 	{
-		if (f->status)
+		if (f->stat)
 		{
 			buffer[k] = 0;
 			j = n;
 		}
 	}
-	if (f->cmd_buf_type == CMD_OR)
+	if (f->cmd_buffer_type == CMD_OR)
 	{
-		if (!f->status)
+		if (!f->stat)
 		{
 			buf[k] = 0;
 			i = n;
