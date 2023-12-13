@@ -12,12 +12,12 @@ int alias_print(struct_list *d)
 
 	if (f)
 	{
-		v = _strchr(d->str, '=');
-		for (b = d->str; b <= v; b++)
-			_putchar(*b);
-		_putchar('\'');
-		_puts(v + 1);
-		_puts("'\n");
+		v = str_char(d->c, '=');
+		for (b = d->c; b <= v; b++)
+			putchar(*b);
+		putchar('\'');
+		puts(v + 1);
+		puts("'\n");
 		return (0);
 	}
 	return (1);
@@ -37,17 +37,17 @@ int alias_rep(struct_info *f)
 
 	for (k = 0; k < 10; k++)
 	{
-		d = node_starts_with(f->alias, f->argv[0], '=');
+		d = node_begins(f->alias, f->arg_vec[0], '=');
 		if (!d)
 			return (0);
-		free(f->argv[0]);
-		m = _strchr(d->str, '=');
+		free(f->arg_vec[0]);
+		m = str_char(d->c, '=');
 		if (!m)
 			return (0);
-		m = _strdup(m + 1);
+		m = str_dup(m + 1);
 		if (!m)
 			return (0);
-		f->argv[0] = m;
+		f->arg_vec[0] = m;
 	}
 	return (1);
 }
@@ -74,7 +74,7 @@ int alias_set(struct_info *f, char *t)
 }
 
 /**
- * alias_unset - function that unsets an alias to string
+ * alias_unset - function that unsets an alias to string:wq
  * @f: struct containing potential arguments
  * @t: string alias
  *
@@ -85,13 +85,13 @@ int alias_unset(struct_info *f, char *t)
 	char *x, z;
 	int val;
 
-	x = _strchr(t, '=');
+	x = str_char(t, '=');
 	if (!x)
 		return (1);
 	z = *x;
 	*x = 0;
-	val = delete_node_at_index(&(f->alias),
-		get_node_index(f->alias, node_starts_with(f->alias, t, -1)));
+	val = node_del_index(&(f->alias),
+		node_get_index(f->alias, node_begins(f->alias, t, -1)));
 	*x = z;
 	return (val);
 }

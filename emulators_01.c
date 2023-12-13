@@ -13,39 +13,39 @@ int my_curr_dir(struct_info *f)
 
 	k = getcwd(buf, 1024);
 	if (!k)
-		_puts("TODO: >>getcwd failure emsg here<<\n");
-	if (!f->argv[1])
+		puts("TODO: >>getcwd failure emsg here<<\n");
+	if (!f->arg_vec[1])
 	{
-		to = _getenv(f, "HOME=");
+		to = get_environ(f, "HOME=");
 		if (!to)
 			change_dir =
-				chdir((to = _getenv(f, "PWD=")) ? to : "/");
+				chdir((to = get_environ(f, "PWD=")) ? to : "/");
 		else
 			change_dir = chdir(to);
 	}
-	else if (_strcmp(f->argv[1], "-") == 0)
+	else if (str_cmp(f->arg_vec[1], "-") == 0)
 	{
-		if (!_getenv(f, "OLDPWD="))
+		if (!get_environ(f, "OLDPWD="))
 		{
-			_puts(k);
-			_putchar('\n');
+			puts(k);
+			putchar('\n');
 			return (1);
 		}
-		_puts(_getenv(f, "OLDPWD=")), _putchar('\n');
-		change_dir =
-			chdir((to = _getenv(f, "OLDPWD=")) ? to : "/");
+		puts(get_environ(f, "OLDPWD=")), putchar('\n');
+		change_dir = 
+			chdir((to = get_environ(f, "OLDPWD=")) ? to : "/");
 	}
 	else
-		change_dir = chdir(f->argv[1]);
+		change_dir = chdir(f->arg_vec[1]);
 	if (change_dir == -1)
 	{
-		print_error(f, "can't cd to ");
-		_eputs(f->argv[1]), _eputchar('\n');
+		err_pr(f, "can't cd to ");
+		puts_err(f->arg_vec[1]), putchar_err('\n');
 	}
 	else
 	{
-		_setenv(f, "OLDPWD", _getenv(f, "PWD="));
-		_setenv(f, "PWD", getcwd(buf, 1024));
+		set_environ(f, "OLDPWD", get_environ(f, "PWD="));
+		set_environ(f, "PWD", getcwd(buf, 1024));
 	}
 	return (0);
 }
@@ -62,23 +62,23 @@ int my_alias(struct_info *f)
 	char *s = NULL;
 	struct_list *d = NULL;
 
-	if (f->argc == 1)
+	if (f->arg_count == 1)
 	{
 		d = f->alias;
 		while (d)
 		{
-			print_alias(d);
-			d = d->next;
+			alias_print(d);
+			d = d->node;
 		}
 		return (0);
 	}
-	for (k = 1; f->argv[k]; k++)
+	for (k = 1; f->arg_vec[k]; k++)
 	{
-		s = _strchr(f->argv[k], '=');
+		s = str_char(f->arg_vec[k], '=');
 		if (s)
-			set_alias(f, f->argv[k]);
+			alias_set(f, f->arg_vec[k]);
 		else
-			print_alias(node_starts_with(f->alias, f->argv[k], '='));
+			alias_print(node_begins(f->alias, f->arg_vec[k], '='));
 	}
 
 	return (0);
@@ -92,7 +92,7 @@ int my_alias(struct_info *f)
  */
 int my_history(struct_info *f)
 {
-	print_list(f->history);
+	list_print(f->hist);
 	return (0);
 }
 
@@ -106,10 +106,10 @@ int my_help(struct_info *f)
 {
 	char **gum;
 
-	gum = f->argv;
-	_puts("help call works. Function not yet implemented \n");
+	gum = f->arg_vec;
+	puts("help call works. Function not yet implemented \n");
 	if (0)
-		_puts(*gum);
+		puts(*gum);
 	return (0);
 }
 
@@ -123,20 +123,20 @@ int my_exit(struct_info *f)
 {
 	int check_exit;
 
-	if (f->argv[1])
+	if (f->arg_vec[1])
 	{
-		check_exit = _erratoi(f->argv[1]);
+		check_exit = err_a_to_i(f->arg_vec[1]);
 		if (check_exit == -1)
 		{
-			f->status = 2;
-			print_error(f, "Illegal number: ");
-			_eputs(f->argv[1]);
-			_eputchar('\n');
+			f->stat = 2;
+			err_pr(f, "Illegal number: ");
+			puts_err(f->arg_vec[1]);
+			putchar_err('\n');
 			return (1);
 		}
-		f->err_num = _erratoi(f->argv[1]);
+		f->num_err = err_a_to_i(f->arg_vec[1]);
 		return (-2);
 	}
-	f->err_num = -1;
+	f->num_err = -1;
 	return (-2);
 }
