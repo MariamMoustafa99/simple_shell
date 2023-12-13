@@ -7,7 +7,7 @@
  * Return: 1 if var is replaced or 0 otherwise
  */
 
-int rep_vars(struct_info *f)
+int var_rep(struct_info *f)
 {
 	int k = 0;
 	struct_list *d;
@@ -57,7 +57,8 @@ int str_rep(char **str_old, char *str_new)
 }
 
 /**
- * chain_del - function that checks if the current char in buf is a chain delimeter
+ * chain_del - function that checks if the current char in buf
+ *is a chain delimeter
  * @f: struct containing potential arguments
  * @buffer: char buffer
  * @c: address of the current pos in buffer
@@ -92,9 +93,10 @@ int chain_del(struct_info *f, char *buffer, size_t *c)
 }
 
 /**
- * chain_checked - function that checks whether to continue chaining based on prev status
+ * chain_checked - function that checks whether to continue chaining
+ * based on prev status
  * @f: struct containing potential arguments
- * @buf: char buffer
+ * @buffer: char buffer
  * @c: address of the current pos in buffer
  * @k: starting pos in buffer
  * @n: the length of buffer
