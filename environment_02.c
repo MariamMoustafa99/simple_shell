@@ -12,8 +12,8 @@ int pop_environ_list(struct_info *f)
 	size_t k;
 
 	for (k = 0; environ[k]; k++)
-		add_node_end(&d, environ[k], 0);
-	f->env = d;
+		node_add_end(&d, environ[k], 0);
+	f->en_viron = d;
 	return (0);
 }
 
@@ -25,10 +25,10 @@ int pop_environ_list(struct_info *f)
  */
 char **copy_environ(struct_info *f)
 {
-	if (!f->environ || f->env_changed)
+	if (!f->environ || f->env_change)
 	{
-		f->environ = list_to_strings(f->env);
-		f->env_changed = 0;
+		f->environ = str_list_arr(f->en_viron);
+		f->env_change = 0;
 	}
 
 	return (f->environ);
@@ -51,28 +51,28 @@ int set_environ(struct_info *f, char *r, char *u)
 	if (!r || !u)
 		return (0);
 
-	buffer = malloc(_strlen(r) + _strlen(u) + 2);
+	buffer = malloc(str_len(r) + str_len(u) + 2);
 	if (!buffer)
 		return (1);
-	_strcpy(buffer, r);
-	_strcat(buffer, "=");
-	_strcat(buffer, u);
-	d = f->env;
+	str_copy(buffer, r);
+	str_concat(buffer, "=");
+	str_concat(buffer, u);
+	d = f->en_viron;
 	while (d)
 	{
-		c = starts_with(d->str, r);
+		c = start_with(d->c, r);
 		if (c && *c == '=')
 		{
-			free(d->str);
-			d->str = buffer;
-			f->env_changed = 1;
+			free(d->c);
+			d->c = buffer;
+			f->env_change = 1;
 			return (0);
 		}
-		d = d->next;
+		d = d->node;
 	}
-	add_node_end(&(f->env), buffer, 0);
+	node_add_end(&(f->en_viron), buffer, 0);
 	free(buffer);
-	f->env_changed = 1;
+	f->env_change = 1;
 	return (0);
 }
 
@@ -85,7 +85,7 @@ int set_environ(struct_info *f, char *r, char *u)
  */
 int unset_environ(struct_info *f, char *r)
 {
-	struct_list *d = f->env;
+	struct_list *d = f->en_viron;
 	size_t k = 0;
 	char *c;
 
@@ -94,16 +94,16 @@ int unset_environ(struct_info *f, char *r)
 
 	while (d)
 	{
-		c = starts_with(d->str, r);
+		c = start_with(d->c, r);
 		if (c && *c == '=')
 		{
-			f->env_changed = delete_node_at_index(&(f->env), k);
+			f->env_change = node_del_index(&(f->en_viron), k);
 			k = 0;
-			d = f->env;
+			d = f->en_viron;
 			continue;
 		}
-		d = d->next;
+		d = d->node;
 		k++;
 	}
-	return (f->env_changed);
+	return (f->env_change);
 }

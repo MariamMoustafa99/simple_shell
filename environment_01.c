@@ -8,7 +8,7 @@
  */
 int my_environ(struct_info *f)
 {
-	print_list_str(f->env);
+	str_list_print(f->en_viron);
 	return (0);
 }
 
@@ -20,12 +20,12 @@ int my_environ(struct_info *f)
  */
 int my_set_environ(struct_info *f)
 {
-	if (f->argc != 3)
+	if (f->arg_count != 3)
 	{
-		_eputs("Incorrect number of arguements\n");
+		puts_err("Incorrect number of arguements\n");
 		return (1);
 	}
-	if (set_environ(f, f->argv[1], f->argv[2]))
+	if (set_environ(f, f->arg_vec[1], f->arg_vec[2]))
 		return (0);
 	return (1);
 }
@@ -40,13 +40,13 @@ int my_unset_environ(struct_info *f)
 {
 	int k;
 
-	if (f->argc == 1)
+	if (f->arg_count == 1)
 	{
-		_eputs("Too few arguements.\n");
+		puts_err("Too few arguements.\n");
 		return (1);
 	}
-	for (k = 1; k <= f->argc; k++)
-		unset_environ(f, f->argv[k]);
+	for (k = 1; k <= f->arg_count; k++)
+		unset_environ(f, f->arg_vec[k]);
 
 	return (0);
 }
@@ -60,15 +60,15 @@ int my_unset_environ(struct_info *f)
  */
 char *get_environ(struct_info *f, const char *env_name)
 {
-	struct_list *d = f->env;
+	struct_list *d = f->en_viron;
 	char *c;
 
 	while (d)
 	{
-		c = starts_with(d->str, env_name);
+		c = start_with(d->c, env_name);
 		if (c && *c)
 			return (c);
-		d = d->next;
+		d = d->node;
 	}
 	return (NULL);
 }
