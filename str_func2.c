@@ -6,13 +6,13 @@
  *
  * Return: void
  */
-void puts(char *m)
+void put_s(char *m)
 {
 	int k = 0;
 
 	if (!m)
 		return;
-	while (m[i] != '\0')
+	while (m[k] != '\0')
 	{
 		put_char(m[k]);
 		k++;
@@ -36,7 +36,7 @@ int put_char(char s)
 		f = 0;
 	}
 	if (s != BUFFER_FLUSH)
-		buf[f++] = s;
+		buffer[f++] = s;
 	return (1);
 }
 

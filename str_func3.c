@@ -17,7 +17,7 @@ char **str_to_word(char *m, char *del)
 		return (NULL);
 	if (!del)
 		del = " ";
-	for (a = 0; m[i] != '\0'; a++)
+	for (a = 0; m[a] != '\0'; a++)
 		if (!de_limiter(m[a], del) && (de_limiter(m[a + 1], del) || !m[a + 1]))
 			numOfWords++;
 
@@ -88,7 +88,7 @@ char **str_to_word2(char *m, char del)
 			return (NULL);
 		}
 		for (d = 0; d < c; d++)
-			str[b][d] = m[i++];
+			str[b][d] = m[a++];
 		str[b][d] = 0;
 	}
 	str[b] = NULL;

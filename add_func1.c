@@ -94,12 +94,12 @@ void err_pr(struct_info *f, char *err_str)
  */
 int dec_pr(int p, int file_des)
 {
-	int (*__putchar)(char) = _putchar;
+	int (*__putchar)(char) = put_char;
 	int k, n = 0;
 	unsigned int absolute, rent;
 
 	if (file_des == STDERR_FILENO)
-		__putchar = _eputchar;
+		__putchar = putchar_err;
 	if (p < 0)
 	{
 		absolute = -p;

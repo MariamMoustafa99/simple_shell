@@ -37,17 +37,6 @@ extern char **environ;
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
 	0, 0, 0}
 
-/**
- *struct built_in - contain builtin string and related functions
- *@flag: the builtin command flag
- *@nc: the function
- */
-typedef struct built_in
-{
-	char *flag;
-	int (*nc)(struct_info *);
-} built_in_table;
-
 
 /**
  * struct list_str - singly linked list
@@ -94,9 +83,9 @@ typedef struct passinfo
 	int num_err;
 	int lc_flag;
 	char *file_name;
-	list_t *en_viron;
-	list_t *hist;
-	list_t *alias;
+	struct_list *en_viron;
+	struct_list *hist;
+	struct_list *alias;
 	char **environ;
 	int env_change;
 	int stat;
@@ -107,6 +96,17 @@ typedef struct passinfo
 	int hist_count;
 } struct_info;
 
+/**
+ *  struct built_in - contain builtin string and related functions
+ *  @flag: the builtin command flag
+ *  @nc: the function
+ */
+typedef struct built_in
+{
+	char *flag;
+	int (*nc)(struct_info *);
+} built_in_table;
+
 /* string_funct1.c */
 char *start_with(const char *, const char *);
 int str_len(char *);
@@ -114,7 +114,7 @@ char *str_concat(char *, char *);
 int str_cmp(char *, char *);
 
 /* string_func2.c */
-void puts(char *);
+void put_s(char *);
 int put_char(char);
 char *str_copy(char *, char *);
 char *str_dup(const char *);
@@ -156,7 +156,7 @@ int err_a_to_i(char *);
 
 /* hsh.c */
 int hsh(struct_info *, char **);
-int cmd_builtin(struct_infot *);
+int cmd_builtin(struct_info *);
 void cmd_fork(struct_info *);
 void cmd_find(struct_info *);
 

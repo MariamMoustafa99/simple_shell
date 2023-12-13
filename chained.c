@@ -14,7 +14,7 @@ int var_rep(struct_info *f)
 
 	for (k = 0; f->arg_vec[k]; k++)
 	{
-		if (f->arg_vec[k][0] != '$' || !f->arg_vecv[k][1])
+		if (f->arg_vec[k][0] != '$' || !f->arg_vec[k][1])
 			continue;
 
 		if (!str_cmp(f->arg_vec[k], "$?"))
@@ -69,11 +69,11 @@ int chain_del(struct_info *f, char *buffer, size_t *c)
 {
 	size_t i = *c;
 
-	if (buffer[j] == '|' && buffer[i + 1] == '|')
+	if (buffer[i] == '|' && buffer[i + 1] == '|')
 	{
 		buffer[i] = 0;
 		i++;
-		f->cmd_buf_type = CMD_OR;
+		f->cmd_buffer_type = CMD_OR;
 	}
 	else if (buffer[i] == '&' && buffer[i + 1] == '&')
 	{
@@ -112,14 +112,14 @@ void chain_checked(struct_info *f, char *buffer, size_t *c, size_t k, size_t n)
 		if (f->stat)
 		{
 			buffer[k] = 0;
-			j = n;
+			i = n;
 		}
 	}
 	if (f->cmd_buffer_type == CMD_OR)
 	{
 		if (!f->stat)
 		{
-			buf[k] = 0;
+			buffer[k] = 0;
 			i = n;
 		}
 	}

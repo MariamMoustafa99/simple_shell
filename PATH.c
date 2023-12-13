@@ -9,13 +9,13 @@
  */
 int cmd_exec(struct_info *f, char *th)
 {
-	struct status state;
+	struct stat st;
 
 	(void)f;
-	if (!th || status(th, &state))
+	if (!th || stat(th, &st))
 		return (0);
 
-	if (state.state_mode & S_IFREG)
+	if (st.st_mode & S_IFREG)
 	{
 		return (1);
 	}
@@ -26,11 +26,11 @@ int cmd_exec(struct_info *f, char *th)
  * path_finder - function that finds the cmd in the PATH string
  * @f: struct containing potential arguments
  * @str_path: path str
- * @commmand: the command to find
+ * @command: the command to find
  *
  * Return: full path of cmd if found or NULL
  */
-char *path_finder(struct_info *f, char *str_path, char *commmand)
+char *path_finder(struct_info *f, char *str_path, char *command)
 {
 	int k = 0, position = 0;
 	char *th;

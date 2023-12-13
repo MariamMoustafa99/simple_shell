@@ -10,7 +10,7 @@ int hist_read(struct_info *f)
 {
 	int k, end = 0, count_ln = 0;
 	ssize_t file, read_len, file_size = 0;
-	struct status stat;
+	struct stat st;
 	char *buffer = NULL, *file_name = hist_get(f);
 
 	if (!file_name)
@@ -20,8 +20,8 @@ int hist_read(struct_info *f)
 	free(file_name);
 	if (file == -1)
 		return (0);
-	if (!fstat(file, &stat))
-		file_size = stat.st_size;
+	if (!fstat(file, &st))
+		file_size = st.st_size;
 	if (file_size < 2)
 		return (0);
 	buffer = malloc(sizeof(char) * (file_size + 1));
@@ -46,7 +46,7 @@ int hist_read(struct_info *f)
 	while (f->hist_count-- >= HIST_MAX)
 		node_del_index(&(f->hist), 0);
 	hist_renum(f);
-	return (f->hist_scount);
+	return (f->hist_count);
 }
 
 /**
@@ -97,7 +97,7 @@ int hist_write(struct_info *f)
 		puts_filedes(d->c, file_dir);
 		put_filedes('\n', file_dir);
 	}
-	_putfd(BUFFER_FLUSH, file_dir);
+	put_filedes(BUFFER_FLUSH, file_dir);
 	close(file_dir);
 	return (1);
 }

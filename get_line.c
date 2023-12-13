@@ -11,7 +11,7 @@ void signal_handler(__attribute__((unused))int n_sig)
 {
 	puts("\n");
 	puts("$ ");
-	putchar(BUF_FLUSH);
+	putchar(BUFFER_FLUSH);
 }
 
 /**
@@ -155,9 +155,9 @@ int get_line_next(struct_info *f, char **pointer, size_t *s)
 		return (c ? free(c), -1 : -1);
 
 	if (d)
-		_strncat(ptr_new, buffer + k, n - k);
+		str_num_concat(ptr_new, buffer + k, n - k);
 	else
-		_strncpy(ptr_new, buffer + k, n - k + 1);
+		str_num_copy(ptr_new, buffer + k, n - k + 1);
 
 	d += n - k;
 	k = n;

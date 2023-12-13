@@ -7,7 +7,7 @@
  *
  * Return: 0 on success or 1 on failure
  */
-int hsh(info_t *f, char **arg_vec)
+int hsh(struct_info *f, char **arg_vec)
 {
 	ssize_t m = 0;
 	int ret = 0;
@@ -65,10 +65,10 @@ int cmd_builtin(struct_info *f)
 	};
 
 	for (k = 0; builtintable[k].flag; k++)
-		if (str_cmp(f->argv[0], builtintable[k].flag) == 0)
+		if (str_cmp(f->arg_vec[0], builtintable[k].flag) == 0)
 		{
 			f->line_count++;
-			ret = builtintable[k].func(f);
+			ret = builtintable[k].nc(f);
 			break;
 		}
 	return (ret);
@@ -92,7 +92,7 @@ void cmd_fork(struct_info *f)
 	}
 	if (pid_ch == 0)
 	{
-		if (execve(f->str_path, f->arg_vec, get_environ(f)) == -1)
+		if (execve(f->str_path, f->arg_vec, copy_environ(f)) == -1)
 		{
 			info_free(f, 1);
 			if (errno == EACCES)
@@ -107,7 +107,7 @@ void cmd_fork(struct_info *f)
 		{
 			f->stat = WEXITSTATUS(f->stat);
 			if (f->stat == 126)
-				print_error(f, "Permission denied\n");
+				err_pr(f, "Permission denied\n");
 		}
 	}
 }
@@ -129,7 +129,7 @@ void cmd_find(struct_info *f)
 		f->line_count++;
 		f->lc_flag = 0;
 	}
-	for (m = 0, n = 0; f->arg[m]; k++)
+	for (m = 0, n = 0; f->arg[m]; n++)
 		if (!de_limiter(f->arg[m], " \t\n"))
 			n++;
 	if (!n)
@@ -149,7 +149,7 @@ void cmd_find(struct_info *f)
 		else if (*(f->arg) != '\n')
 		{
 			f->stat = 127;
-			print_error(f, "not found\n");
+			err_pr(f, "not found\n");
 		}
 	}
 }

@@ -30,7 +30,7 @@ void info_set(struct_info *f, char **arg_vec)
 		f->arg_count = k;
 
 		alias_rep(f);
-		rep_vars(f);
+		var_rep(f);
 	}
 }
 

@@ -30,7 +30,7 @@ int main(int arg_count, char **arg_vec)
 				puts_err(": 0: Can't open ");
 				puts_err(arg_vec[1]);
 				putchar_err('\n');
-				putchar_err(BUF_FLUSH);
+				putchar_err(BUFFER_FLUSH);
 				exit(127);
 			}
 			return (EXIT_FAILURE);

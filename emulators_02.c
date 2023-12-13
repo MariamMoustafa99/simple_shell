@@ -10,7 +10,7 @@ int alias_print(struct_list *d)
 {
 	char *v = NULL, *b = NULL;
 
-	if (f)
+	if (d)
 	{
 		v = str_char(d->c, '=');
 		for (b = d->c; b <= v; b++)
@@ -63,14 +63,14 @@ int alias_set(struct_info *f, char *t)
 {
 	char *x;
 
-	x = _strchr(t, '=');
+	x = str_char(t, '=');
 	if (!x)
 		return (1);
 	if (!*++x)
 		return (alias_unset(f, t));
 
 	alias_unset(f, t);
-	return (add_node_end(&(f->alias), t, 0) == NULL);
+	return (node_add_end(&(f->alias), t, 0) == NULL);
 }
 
 /**
