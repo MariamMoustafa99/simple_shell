@@ -1,23 +1,23 @@
 #include "shell.h"
 
 /**
- * put_filesdes - function that writes a char to a file descriptor
+ * put_filedes - function that writes a char to a file descriptor
  * @p: char to write
  * @file_des: filedescriptor to write to
  *
  * Return: 1 on success or -1 on error
  */
-int put_filesdes(char p, int file_des)
+int put_filedes(char p, int file_des)
 {
 	static int k;
-	static char buffer[WRITE_BUF_SIZE];
+	static char buffer[WRITE_BUFFER_SIZE];
 
-	if (p == BUF_FLUSH || k >= WRITE_BUF_SIZE)
+	if (p == BUFFER_FLUSH || k >= WRITE_BUFFER_SIZE)
 	{
 		write(file_des, buffer, k);
 		k = 0;
 	}
-	if (p != BUF_FLUSH)
+	if (p != BUFFER_FLUSH)
 		buffer[k++] = p;
 	return (1);
 }
@@ -37,7 +37,7 @@ int puts_filedes(char *p, int file_des)
 		return (0);
 	while (*p)
 	{
-		k += put_filesdes(*p++, filedes);
+		k += put_filedes(*p++, file_des);
 	}
 	return (k);
 }
@@ -70,14 +70,14 @@ void puts_err(char *c)
 int putchar_err(char p)
 {
 	static int k;
-	static char buffer[WRITE_BUF_SIZE];
+	static char buffer[WRITE_BUFFER_SIZE];
 
-	if (p == BUF_FLUSH || k >= WRITE_BUF_SIZE)
+	if (p == BUFFER_FLUSH || k >= WRITE_BUFFER_SIZE)
 	{
 		write(2, buffer, k);
 		k = 0;
 	}
-	if (p != BUF_FLUSH)
+	if (p != BUFFER_FLUSH)
 		buffer[k++] = p;
 	return (1);
 }
