@@ -24,7 +24,7 @@ size_t list_print(const struct_list *d)
 }
 
 /**
- * str_list_print - function that prints only str elements 
+ * str_list_print - function that prints only str elements
  * of struct_list linked list
  * @d: a pointer to 1st node
  *
