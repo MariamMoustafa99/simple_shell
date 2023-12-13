@@ -12,19 +12,19 @@ size_t list_print(const struct_list *d)
 
 	while (d)
 	{
-		_puts(convert_number(d->num, 10, 0));
-		_putchar(':');
-		_putchar(' ');
-		_puts(d->str ? d->str : "(nil)");
-		_puts("\n");
-		d = d->next;
+		puts(num_conv(d->x, 10, 0));
+		putchar(':');
+		putchar(' ');
+		puts(d->c ? d->c : "(nil)");
+		puts("\n");
+		d = d->node;
 		k++;
 	}
 	return (k);
 }
 
 /**
- * str_list_print - function that prints only str elements
+ * str_list_print - function that prints only str elements 
  * of struct_list linked list
  * @d: a pointer to 1st node
  *
@@ -36,9 +36,9 @@ size_t str_list_print(const struct_list *d)
 
 	while (d)
 	{
-		_puts(d->str ? d->str : "(nil)");
-		_puts("\n");
-		d = d->next;
+		puts(d->c ? d->c : "(nil)");
+		puts("\n");
+		d = d->node;
 		k++;
 	}
 	return (k);
@@ -56,7 +56,7 @@ size_t list_length(const struct_list *d)
 
 	while (d)
 	{
-		d = d->next;
+		d = d->node;
 		k++;
 	}
 	return (k);
@@ -80,9 +80,9 @@ char **str_list_arr(struct_list *h)
 	arr_strs = malloc(sizeof(char *) * (k + 1));
 	if (!arr_strs)
 		return (NULL);
-	for (k = 0; d; d = d->next, k++)
+	for (k = 0; d; d = d->node, k++)
 	{
-		r = malloc(_strlen(d->str) + 1);
+		r = malloc(str_len(d->c) + 1);
 		if (!r)
 		{
 			for (m = 0; m < k; m++)
@@ -91,7 +91,7 @@ char **str_list_arr(struct_list *h)
 			return (NULL);
 		}
 
-		r = _strcpy(r, d->str);
+		r = str_copy(r, d->c);
 		arr_strs[k] = r;
 	}
 	arr_strs[k] = NULL;
@@ -114,8 +114,8 @@ void list_free(struct_list **ptr_h)
 	d = h;
 	while (d)
 	{
-		d_next = d->next;
-		free(d->str);
+		d_next = d->node;
+		free(d->c);
 		free(d);
 		d = d_next;
 	}

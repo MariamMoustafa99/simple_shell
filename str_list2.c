@@ -14,10 +14,10 @@ struct_list *node_begins(struct_list *h, char *x, char r)
 
 	while (h)
 	{
-		c = starts_with(h->str, x);
+		c = start_with(h->c, x);
 		if (c && ((r == -1) || (*c == r)))
 			return (h);
-		h = h->next;
+		h = h->node;
 	}
 	return (NULL);
 }
@@ -37,7 +37,7 @@ ssize_t node_get_index(struct_list *h, struct_list *d)
 	{
 		if (h == d)
 			return (k);
-		h = h->next;
+		h = h->node;
 		k++;
 	}
 	return (-1);
@@ -60,18 +60,18 @@ struct_list *node_add_start(struct_list **h, const char *d_str, int d_index)
 	h_new = malloc(sizeof(struct_list));
 	if (!h_new)
 		return (NULL);
-	_memset((void *)h_new, 0, sizeof(struct_list));
-	h_new->num = d_index;
+	memory_set((void *)h_new, 0, sizeof(struct_list));
+	h_new->x = d_index;
 	if (d_str)
 	{
-		h_new->str = _strdup(d_str);
-		if (!h_new->str)
+		h_new->c = str_dup(d_str);
+		if (!h_new->c)
 		{
 			free(h_new);
 			return (NULL);
 		}
 	}
-	h_new->next = *h;
+	h_new->node = *h;
 	*h = h_new;
 	return (h_new);
 }
@@ -95,12 +95,12 @@ struct_list *node_add_end(struct_list **h, const char *d_str, int d_index)
 	d_new = malloc(sizeof(struct_list));
 	if (!d_new)
 		return (NULL);
-	_memset((void *)d_new, 0, sizeof(struct_list));
-	d_new->num = d_index;
+	memory_set((void *)d_new, 0, sizeof(struct_list));
+	d_new->x = d_index;
 	if (d_str)
 	{
-		d_new->str = _strdup(d_str);
-		if (!d_new->str)
+		d_new->c = str_dup(d_str);
+		if (!d_new->c)
 		{
 			free(d_new);
 			return (NULL);
@@ -108,9 +108,9 @@ struct_list *node_add_end(struct_list **h, const char *d_str, int d_index)
 	}
 	if (d)
 	{
-		while (d->next)
-			d = d->next;
-		d->next = d_new;
+		while (d->node)
+			d = d->node;
+		d->node = d_new;
 	}
 	else
 		*h = d_new;
@@ -135,8 +135,8 @@ int node_del_index(struct_list **h, unsigned int x)
 	if (!x)
 	{
 		d = *h;
-		*h = (*h)->next;
-		free(d->str);
+		*h = (*h)->node;
+		free(d->c);
 		free(d);
 		return (1);
 	}
@@ -145,14 +145,14 @@ int node_del_index(struct_list **h, unsigned int x)
 	{
 		if (k == x)
 		{
-			d_prev->next = d->next;
-			free(d->str);
+			d_prev->node = d->node;
+			free(d->c);
 			free(d);
 			return (1);
 		}
 		k++;
 		d_prev = d;
-		d = d->next;
+		d = d->node;
 	}
 	return (0);
 }
