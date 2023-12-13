@@ -4,7 +4,7 @@
  * **str_to_word - function that split string to words
  * @m: string input
  * @del: delimiter string
-
+ *
  * Return: a pointer to an array of strings or NULL on error
  */
 
@@ -53,7 +53,7 @@ char **str_to_word(char *m, char *del)
  * **str_to_word2 - function that split string to words
  * @m: string input
  * @del: delimiter string
-
+ *
  * Return: a pointer to an array of strings or NULL on error
  */
 char **str_to_word2(char *m, char del)

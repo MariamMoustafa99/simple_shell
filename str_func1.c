@@ -57,7 +57,8 @@ char *str_concat(char *str1, char *str2)
  * @str1: string 1
  * @str2: tstring 2
  *
- * Return: -1 if str1 less than str2, 1 if str1 larger than str2 or 0 if str1 == str2
+ * Return: -1 if str1 less than str2, 1 if str1 larger than str2
+ * or 0 if str1 == str2
  */
 int str_cmp(char *str1, char *str2)
 {
