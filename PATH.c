@@ -37,7 +37,7 @@ char *path_finder(struct_info *f, char *str_path, char *commmand)
 
 	if (!str_path)
 		return (NULL);
-	if ((_strlen(command) > 2) && starts_with(command, "./"))
+	if ((str_len(command) > 2) && start_with(command, "./"))
 	{
 		if (cmd_exec(f, command))
 			return (command);
@@ -48,11 +48,11 @@ char *path_finder(struct_info *f, char *str_path, char *commmand)
 		{
 			th = char_duplicate(str_path, position, k);
 			if (!*th)
-				_strcat(th, command);
+				str_concat(th, command);
 			else
 			{
-				_strcat(th, "/");
-				_strcat(th, command);
+				str_concat(th, "/");
+				str_concat(th, command);
 			}
 			if (cmd_exec(f, th))
 				return (th);
